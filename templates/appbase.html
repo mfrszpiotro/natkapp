@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+
+<div id="slide">
+    <div class="slider-abs pt-3">
+        <div class="rel pt-5">
+            <h2>Natkapp®</h2>
+        </div>
+        <div class="rel pt-4">
+            <a href="{{ url_for('index') }}">
+                <button type="button" class="btn btn-dark slider-btn">Co Natka myśli o Kunderach?</button>
+                <button type="button" class="btn btn-dark slider-icon">&#10002</button>
+            </a>
+        </div>
+        <div class="rel pt-1">
+            <a href="{{ url_for('booklist') }}">
+                <button type="button" class="btn btn-dark slider-btn">Pełna lista Kunderów u Natki</button>
+                <button type="button" class="btn btn-dark slider-icon">📚</button>
+            </a>
+        </div>
+        <div class="rel pt-1">
+            <a href="{{ url_for('movies') }}">
+                <button type="button" class="btn btn-dark slider-btn">Co Natka myśli o filmach kunderskich?</button>
+                <button type="button" class="btn btn-dark slider-icon">🎬</button>
+            </a>
+        </div>
+        <div class="rel pt-1">
+            <a href="{{ url_for('login') }}">
+                <button type="button" class="btn btn-dark slider-btn">Jesteś Natką?</button>
+                <button type="button" class="btn btn-dark slider-icon">🥵</button>
+            </a>
+        </div>
+    </div>
+  </div>
+
+<div class="messages pt-4">
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <div class="success">
+            <span id="tickbtn" class="closebtn-success">&#x2713</span>
+            <script type="text/javascript" src="{{ url_for('static', filename='scripts/onHide.js') }}"></script>
+            {{ message }}
+        </div>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+<div class="errors p-4">
+    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+    {% if errors %}
+    <ul class=flashes>
+        {% for error in errors %}
+            <div class="error">
+                <span id="closebtn" class="closebtn-error">&#x2717</span>
+                <script type="text/javascript" src="{{ url_for('static', filename='scripts/onHide.js') }}"></script>
+                <span> {{ error }} </span>
+            </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}

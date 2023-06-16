@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            {% block styles %}
+                <title>Natkapp®</title>
+                <link rel="icon" href="{{ url_for('static', filename='images/fav3.png') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='styles/natkappstyles.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='styles/flashes.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='styles/slider.css') }}">
+                {{ bootstrap.load_css() }}
+            {% endblock %}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block navbar %}{% endblock %}
+        {% block content %}{% endblock %}
+        {% block scripts %}
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+    </body>
+</html>

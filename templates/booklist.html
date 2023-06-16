@@ -1,0 +1,31 @@
+{% extends 'appbase.html' %}
+
+{% block content %}
+
+<div class="abs">
+    <div class="rel">
+        <p>Pełna lista Kunderów:</p>
+    </div>
+    <div class="rel">
+        <table class="table table-dark table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Czy Natka ma?</th>
+                <th scope="col">Tytuł</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+            <tr>
+                <td>Tak</td>
+                <td>{{ book.name }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+    </div>
+</div>
+
+
+
+{% endblock %}
