@@ -1,3 +1,8 @@
+.slider-title {
+  margin-right: 60px;
+  font-weight: bold !important;
+}
+
 .slider-icon-txt {
   font-size: 5.5vh;
 }
@@ -29,11 +34,11 @@
   -moz-transition: left 0.4s ease-in-out;
   -webkit-transition: left 0.4s ease-in-out;
   background-color: #a50000;
-  width: 280px;
+  width: 320px;
   height: 100%;
   z-index: 999;
   top: 0;
-  left: -220px;
+  left: -240px;
   position: fixed;
   background: #292929;
   box-shadow: 5px 5px 9px #cccccc,

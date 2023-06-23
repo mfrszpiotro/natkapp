@@ -38,36 +38,13 @@
   width: 80%;
 }
 
-.cover {
-  height: 420px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-}
-
 .flex {
   display: flex;
   flex-flow: wrap;
 }
 
-.descr {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 25px;
-  margin-top: 5px;
-  min-width: 74%;
-  min-height: 200px;
-  background-color: #292929;
-  font-family: 'Cambria';
-  color: white;
-}
-
-.in-carousel {
-  min-height: 440px;
-  margin: 20px
-}
-
 .soft-page {
+  margin-bottom: 20px;
   min-height: 440px;
   background: #292929;
   box-shadow: 2px 2px 9px #cccccc,
