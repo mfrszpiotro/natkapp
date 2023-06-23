@@ -1,4 +1,8 @@
-.force-white{
+.small-text{
+ font-size: 2.5vh;
+}
+
+.force-white {
   margin-left: auto;
   width: 250px;
   height: 423px;
@@ -7,68 +11,46 @@
   font-size: 72px;
 }
 
-.center{
-  margin-left:auto;
-  margin-bottom:auto;
+.center {
+  margin-left: auto;
+  margin-bottom: auto;
 }
 
-.table-dark{
-  border-radius: 20px !important;
-  background: #292929 !important;
-  box-shadow:  2px 2px 4px #272727,
-               -2px -2px 4px #2b2b2b !important;
-}
-
-.table-bordered{
-  border-radius: 20px !important;
-  background: #292929 !important;
-  box-shadow:  2px 2px 4px #272727,
-               -2px -2px 4px #2b2b2b !important;
-}
-
-.table-large{
-  position: absolute;
-  width:75%;
-  right: 11%;
-}
-
-.submit{
-  border-radius: 20px;
+.submit {
   background: #292929;
-  box-shadow:  2px 2px 4px #272727,
-               -2px -2px 4px #2b2b2b;
 }
 
-.form-center{
+.form-center {
   margin-left: auto;
   margin-right: auto;
 }
 
-.rel{
+.rel {
   position: relative;
   margin-left: 25px;
-  margin-right:-25px;
+  margin-right: -25px;
 }
-.abs{
+
+.abs {
   position: absolute;
   top: 12%;
   margin-bottom: 20px;
   width: 80%;
 }
 
-.cover{
+.cover {
   height: 420px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
 }
 
-.flex{
+.flex {
   display: flex;
   flex-flow: wrap;
 }
 
-.descr{
+.descr {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 25px;
@@ -80,17 +62,16 @@
   color: white;
 }
 
-.in-carousel{
+.in-carousel {
   min-height: 440px;
   margin: 20px
 }
 
-.soft-page{
+.soft-page {
   min-height: 440px;
-  border-radius: 20px;
   background: #292929;
-  box-shadow:  5px 5px 9px #272727,
-               -5px -5px 9px #2b2b2b;
+  box-shadow: 2px 2px 9px #cccccc,
+    -2px -2px 9px #cccccc;
 }
 
 h2 {
@@ -99,14 +80,14 @@ h2 {
   margin-left: 10px;
   word-wrap: normal;
   text-align: left;
-  color: white;
+  color: white !important;
 }
 
 p {
-  color: #292929;
+  color: white;
   font-family: "serif";
-  overflow: hidden;    
-  font-family: 'Cambria'; 
+  overflow: hidden;
+  font-family: 'Cambria';
   font-size: 40px;
   word-wrap: break-word;
   text-align: center;
@@ -119,19 +100,25 @@ body {
   align-items: center;
   justify-content: center;
   background-size: 300% 300%;
-  background-image: linear-gradient(
-        -45deg, 
-        #38FDD5 0%,
-        #32E38D 30%,
-        #43FA6E 60%,
-        #3DE332 80%, 
-        #88FD38 100%
-  );  
+  background-image: linear-gradient(-45deg,
+      hwb(163 2% 48%) 0%,
+      hwb(163 2% 44%) 30%,
+      hwb(163 2% 40%) 60%,
+      hwb(163 2% 44%) 80%,
+      hwb(163 0% 65%) 100%);
   animation: AnimateBG 20s ease infinite;
+}
+
+@keyframes AnimateBG {
+  0% {
+    background-position: 0% 50%
   }
-  
-  @keyframes AnimateBG { 
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+
+  50% {
+    background-position: 100% 50%
+  }
+
+  100% {
+    background-position: 0% 50%
+  }
 }

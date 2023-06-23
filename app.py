@@ -10,10 +10,11 @@ app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
 app.config['SECRET_KEY'] = 'h+u5-sNA2%Fr&3"y"9nQEn==rfLjfKB{$RGShJ"$2I`d&j[5-J79:RJZoQJ('
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///natkapp.db"
-#app.config['BOOTSTRAP_BOOTSWATCH_THEME'] = 'lumen'
+app.config['BOOTSTRAP_BOOTSWATCH_THEME'] = 'lux'
 db.init_app(app)
 bootstrap = Bootstrap5(app)
 
+#api google books
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     check = db.Column(db.Boolean, nullable=False)
@@ -21,6 +22,7 @@ class Book(db.Model):
     img = db.Column(db.String, unique=True, nullable=False)
     descr = db.Column(db.String, nullable=True)
 
+#api imdb movies
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)

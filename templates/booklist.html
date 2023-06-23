@@ -7,18 +7,18 @@
         <p>Pełna lista Kunderów:</p>
     </div>
     <div class="rel">
-        <table class="table table-dark table-striped table-bordered table-hover">
-            <thead>
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-header">
               <tr>
-                <th scope="col">Czy Natka ma?</th>
-                <th scope="col">Tytuł</th>
+                <th scope="col"><b class="table-header-text">Czy Natka ma?</b></th>
+                <th scope="col"><b class="table-header-text">Tytuł</b></th>
               </tr>
             </thead>
             <tbody>
             {% for book in books %}
             <tr>
-                <td>Tak</td>
-                <td>{{ book.name }}</td>
+                <td class="table-text">Tak</td>
+                <td class="table-text">{{ book.name }}</td>
             </tr>
             {% endfor %}
             </tbody>

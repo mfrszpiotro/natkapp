@@ -1,0 +1,37 @@
+.table-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Cambria';
+
+}
+
+.table-header{
+    background-color: #292929;
+}
+
+.table-header-text {
+    color: white !important;
+    font-size: 20px;
+    font-family: 'Cambria';
+}
+
+.table-bordered {
+    background: #292929 !important;
+    box-shadow: 2px 2px 4px #cccccc,
+        -2px -2px 4px #cccccc !important;
+}
+
+.table-large {
+    position: absolute;
+    width: 75%;
+    right: 11%;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #272727;
+    color: rgba(255, 255, 255, 0.6)
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    color: white;
+}
