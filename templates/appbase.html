@@ -7,7 +7,17 @@
         <div class="rel pt-5">
             <p class="slider-title">Natkapp®</p>
         </div>
+        {% if session.get("logged", False) %}
         <div class="rel pt-4">
+            <a href="{{ url_for('logout') }}">
+                <button type="button" class="btn btn-dark slider-btn">Wyloguj się</button>
+                <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">❌</h4></button>
+            </a>
+        </div>
+        <div class="rel pt-1">
+        {% else %}
+        <div class="rel pt-4">
+        {% endif %}
             <a href="{{ url_for('index') }}">
                 <button type="button" class="btn btn-dark slider-btn">Co Natka myśli o Kunderach?</button>
                 <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">&#10002</h4></button>
@@ -25,12 +35,25 @@
                 <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">🎬</h4></button>
             </a>
         </div>
-        <div class="rel pt-1">
-            <a href="{{ url_for('login') }}">
-                <button type="button" class="btn btn-dark slider-btn">Jesteś Natką?</button>
-                <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">🥵</h4></button>
-            </a>
-        </div>
+        {% if not session.get("logged", False) %}
+            <div class="rel pt-1">
+                <a href="{{ url_for('login') }}">
+                    <button type="button" class="btn btn-dark slider-btn">Jesteś Natką?</button>
+                    <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">🥵</h4></button>
+                </a>
+            </div>
+        {% endif %}
+        {% if session.get("logged", False) %}
+            <div class="rel pt-1">
+                <button id="submitButtonText" type="submit" class="btn btn-dark slider-btn">Zapisz zmiany!</button>
+                <button id="submitButtonIcon" type="submit" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">✅</h4></button>
+            </div>
+            <script>
+                document.getElementById('submitButtonIcon').addEventListener('click', function() {
+                    document.getElementById('descriptions').submit();
+                });
+            </script>
+      {% endif %}
     </div>
   </div>
 

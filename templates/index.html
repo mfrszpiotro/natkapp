@@ -11,7 +11,7 @@
   </div>
   <div class="rel soft-page">
     <div>
-          <!-- Carousel -->
+    <!-- Carousel -->
     <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
       <!-- Indicators/dots -->
@@ -37,14 +37,16 @@
             <textarea disabled class="descr">Przewijaj by sprawdzić co Natka myśli o wybranych pozycjach</textarea>
           </div>
         </div>
-        {% for book in books %}
-        <div class="carousel-item">
-          <div class="in-carousel flex" >
-            <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
-            <textarea {% if session.get('logged') %} disabled {% endif %} class="descr">Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...</textarea>
+        <form method="POST" id="descriptions" name="descriptions">
+          {% for book in books %}
+          <div class="carousel-item">
+            <div class="in-carousel flex" >
+              <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
+              <textarea id="{{ book.name }}" name="{{ book.name }}" {% if not session.get("logged", False) %} disabled {% endif %} class="descr">{{ book.descr }}</textarea>
+            </div>
           </div>
-        </div>
-        {% endfor %}
+          {% endfor %}
+        </form>
       </div>
 
       <!-- Left and right controls/icons -->
