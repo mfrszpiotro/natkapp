@@ -71,31 +71,15 @@ p {
 }
 
 body {
-  width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: 300% 300%;
-  background-image: linear-gradient(-45deg,
-      hwb(163 2% 48%) 0%,
+  background-image: linear-gradient(0deg,
+      hwb(163 0% 65%) 0%,
       hwb(163 2% 44%) 30%,
       hwb(163 2% 40%) 60%,
       hwb(163 2% 44%) 80%,
       hwb(163 0% 65%) 100%);
-  animation: AnimateBG 20s ease infinite;
-}
-
-@keyframes AnimateBG {
-  0% {
-    background-position: 0% 50%
-  }
-
-  50% {
-    background-position: 100% 50%
-  }
-
-  100% {
-    background-position: 0% 50%
-  }
-}
+    }

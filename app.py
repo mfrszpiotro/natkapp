@@ -1,10 +1,8 @@
 from flask import Flask, redirect, render_template, flash, url_for, session, request
 from flask_bootstrap import Bootstrap5
-from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm
+from db_utils import *
 
-# create the extension
-db = SQLAlchemy()
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
@@ -17,113 +15,25 @@ db.init_app(app)
 bootstrap = Bootstrap5(app)
 
 
-# api google books
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    check = db.Column(db.Boolean, nullable=False)
-    name = db.Column(db.String, unique=True, nullable=False)
-    img = db.Column(db.String, unique=True, nullable=False)
-    descr = db.Column(db.String, nullable=True)
-
-
-# api imdb movies
-class Movie(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-    img = db.Column(db.String, unique=True, nullable=False)
-    descr = db.Column(db.String, nullable=True)
-
-
 with app.app_context():
     db.create_all()
 
 
-def init_books():
-    book = Book(
-
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Życie jest gdzie indziej",
-        img="indziej.jfif",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Księga śmiechu i zapomnienia",
-        img="ksiega.jpeg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Śmieszne miłości",
-        img="milosci.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Nieśmiertelność",
-        img="niesmiertelnosc.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Powolność",
-        img="powolnosc.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Święto nieistotności",
-        img="swieto.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Zdradzone testamenty",
-        img="testamenty.jfif",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Walc pożegnalny",
-        img="walc.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Żart",
-        img="zart.jpg",
-    )
-    db.session.add(book)
-    book = Book(
-        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check=True,
-        name="Zasłona",
-        img="zaslona.jpg",
-    )
-    db.session.add(book)
-    db.session.commit()
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
+    if request.form.__len__() > 0:
+        books = db.session.execute(db.select(Book).order_by(Book.name)).scalars()
+        commit_diff_descr(db, books, request.form.items())
     books = db.session.execute(db.select(Book).order_by(Book.name)).scalars()
-    if request.form.get("descriptions"):
-        flash("ok", "success")
     return render_template("index.html", books=books)
 
 
-@app.route("/booklist")
+@app.route("/booklist", methods=["GET", "POST"])
 def booklist():
-    #init_books()
+    # init_books(db)
+    if request.form.__len__() > 0:
+        books = db.session.execute(db.select(Book).order_by(Book.name)).scalars()
+        commit_diff_check(db, books, request.form.items())
     books = db.session.execute(db.select(Book).order_by(Book.name)).scalars()
     return render_template("booklist.html", books=books)
 

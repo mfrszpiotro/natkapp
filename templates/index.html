@@ -1,9 +1,5 @@
 {% extends 'appbase.html' %}
 
-{% macro static_link(img) -%}
-/static/images/{{ img }}
-{%- endmacro %}
-
 {% block content %}
 <div class="abs">
   <div class="rel">
@@ -42,7 +38,7 @@
           <div class="carousel-item">
             <div class="in-carousel flex" >
               <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
-              <textarea id="{{ book.name }}" name="{{ book.name }}" {% if not session.get("logged", False) %} disabled {% endif %} class="descr">{{ book.descr }}</textarea>
+              <textarea id="{{ book.id }}" name="{{ book.id }}" {% if not session.get("logged", False) %} disabled {% endif %} class="descr">{{ book.descr }}</textarea>
             </div>
           </div>
           {% endfor %}

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% macro static_link(img) -%}
+/static/images/{{ img }}
+{%- endmacro %}
+
 {% block navbar %}
 
 <div id="slide">
@@ -48,11 +52,7 @@
                 <button id="submitButtonText" type="submit" class="btn btn-dark slider-btn">Zapisz zmiany!</button>
                 <button id="submitButtonIcon" type="submit" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">✅</h4></button>
             </div>
-            <script>
-                document.getElementById('submitButtonIcon').addEventListener('click', function() {
-                    document.getElementById('descriptions').submit();
-                });
-            </script>
+            <script type="text/javascript" src="{{ url_for('static', filename='scripts/onSave.js') }}"></script>
       {% endif %}
     </div>
   </div>
