@@ -22,6 +22,7 @@
         {% block content %}{% endblock %}
         {% block scripts %}
             {{ bootstrap.load_js() }}
+            {{ ckeditor.load(pkg_type="standard") }}
         {% endblock %}
     </body>
 </html>
