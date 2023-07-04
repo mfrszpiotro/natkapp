@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+import requests, urllib3
 
 db = SQLAlchemy()
 
@@ -16,8 +17,13 @@ class Book(db.Model):
 # api imdb movies
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-    img = db.Column(db.String, unique=True, nullable=False)
+    seen = db.Column(db.String, nullable=False)
+    orig_title = name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    search = db.Column(db.String, nullable=False)
+    img = db.Column(db.String, nullable=True)
+    appear_type = db.Column(db.String, nullable=False)
+    job = db.Column(db.String, nullable=False)
     descr = db.Column(db.String, nullable=True)
 
 
@@ -53,6 +59,50 @@ def commit_diff_check(database, books, form_books):
         db_book.check = d[1]
         database.session.commit()
 
+def eliminate_duplicates(list_of_dicts, key):
+    unique_dicts = []
+    keys_set = set()
+
+    for dictionary in list_of_dicts:
+        if dictionary[key] not in keys_set:
+            keys_set.add(dictionary[key])
+            unique_dicts.append(dictionary)
+
+    return unique_dicts
+
+def init_movies(database):
+    url = "https://api.themoviedb.org/3/person/40239/movie_credits?language=cz-CZ"
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E"
+    }
+    response = requests.get(url, headers=headers)
+    url_content = response.json()
+    for appear in eliminate_duplicates(url_content.get("cast", []), "title"):
+        movie = Movie(
+            seen = "no",
+            orig_title = appear.get("original_title", ""),
+            name = appear.get("title", ""),
+            search = str(appear.get("title", "")).strip().casefold(),
+            img = appear.get("poster_path", "placeholder.png"),
+            appear_type = "cast",
+            job = appear.get("job", ""),
+            descr = "",
+        )
+        db.session.add(movie)
+    for appear in eliminate_duplicates(url_content.get("crew", []), "title"):
+        movie = Movie(
+            seen = "no",
+            orig_title = appear.get("original_title", ""),
+            name = appear.get("title", ""),
+            search = str(appear.get("title", "")).strip().casefold(),
+            img = appear.get("poster_path", "placeholder.png"),
+            appear_type = "crew",
+            job = appear.get("job", ""),
+            descr = "",
+        )
+        database.session.add(movie)
+    database.session.commit()
 
 def init_books(database):
     book = Book(

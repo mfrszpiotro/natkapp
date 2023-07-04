@@ -37,8 +37,6 @@
               <div class="descr">
                 {{ ckeditor.create(name=book.id, value=book.descr) }}
               </div>
-              {# <textarea id="{{ book.id }}" name="{{ book.id }}" {% if not session.get("logged", False) %} disabled {%
-                endif %} class="descr">{{ book.descr }}</textarea> #}
             </div>
           </div>  
           {% endfor %} {{ ckeditor.load() }}

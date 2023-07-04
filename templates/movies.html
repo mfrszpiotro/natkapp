@@ -2,8 +2,60 @@
 
 {% block content %}
 <div class="abs">
-    <div class="rel">
-      <p>Tu coś kiedyś będzie!</p>
+  <div class="rel">
+    <p>Filmy kunderskie</p>
+    {{ url_content }}
+  </div>
+    <div class="rel soft-page">
+    <!-- Carousel -->
+    <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+
+      <!-- Indicators/dots -->
+      <div class="carousel-indicators">
+        {% for film in films %}
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index-1 }}"
+          class="{% if loop.index == 1 %} active {% endif %}"></button>
+        {% endfor %}
+      </div>
+
+      <!-- The slideshow/carousel -->
+      <div class="carousel-inner">
+        <form method="POST" id="descriptions" name="descriptions">
+          {% for film in films %}
+          <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+            <div class="in-carousel flex">
+              <img src="{{ api_link(film.img) }}" alt="missing poster" class="d-block cover">
+              <div class="descr">
+                {{ ckeditor.create(name=film.id, value=film.descr+"; "+film.name+"; "+film.orig_title+"; "+film.appear_type+"; "+film.job) }}
+              </div>
+            </div>
+          </div>  
+          {% endfor %} {{ ckeditor.load() }}
+          {% if not session.get("logged", False) %}
+            {% for film in films %}
+              {{ ckeditor.config(name=film.id, height=300, custom_config="uiColor: '#FFFFFF', readOnly: 1") }}
+            {% endfor %}
+          {% else %}
+            {% for film in films %}
+              {{ ckeditor.config(name=film.id, height=300, custom_config="uiColor: '#058F68', readOnly: 0") }}
+            {% endfor %}
+          {% endif %} 
+
+        </form>
+      </div>
+
+      <!-- Left and right controls/icons -->
+      <button class="carousel-control-button carousel-control-prev" type="button" data-bs-target="#carousel"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-button carousel-control-next" type="button" data-bs-target="#carousel"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
     </div>
+
+  </div>
+
 </div>
 {% endblock %}

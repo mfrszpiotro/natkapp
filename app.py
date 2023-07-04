@@ -21,6 +21,7 @@ with app.app_context():
     db.drop_all()
     db.create_all()
     init_books(db)
+    init_movies(db)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -60,12 +61,13 @@ def booklist():
         books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()
         commit_diff_check(db, books, request.form.items())
     books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()
-    return render_template("booklist.html", books=books)
+    return render_template("booklist.html", books=list(books))
 
 
 @app.route("/movies")
 def movies():
-    return render_template("movies.html")
+    films = db.session.execute(db.select(Movie).order_by(Movie.search)).scalars()
+    return render_template("movies.html", films=list(films))
 
 
 @app.route("/login", methods=["GET", "POST"])
