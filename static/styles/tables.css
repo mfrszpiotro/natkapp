@@ -1,3 +1,17 @@
+.table-href{
+    color: inherit;
+    text-decoration: none;
+}
+
+.table-href:hover{
+    color: inherit;
+    text-decoration: none;
+}
+
+.table-img {
+    width: 140px;
+}
+
 .table-text {
     color: rgba(255, 255, 255, 0.6);
     font-family: 'Cambria';
@@ -6,6 +20,13 @@
 
 .table-header{
     background-color: #292929;
+}
+
+.table-header-title {
+    color: white !important;
+    font-size: 20px;
+    font-family: 'Cambria';
+    width: 100vw;
 }
 
 .table-header-text {
@@ -29,9 +50,10 @@
 .table-striped>tbody>tr:nth-child(odd)>td,
 .table-striped>tbody>tr:nth-child(odd)>th {
     background-color: #272727;
-    color: rgba(255, 255, 255, 0.6)
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    color: white;
+    color: white !important;
+    font-weight: bold;
 }

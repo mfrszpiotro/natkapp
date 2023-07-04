@@ -1,66 +1,76 @@
 {% extends 'appbase.html' %}
 
-{% macro static_link(img) -%}
-/static/images/{{ img }}
-{%- endmacro %}
-
 {% block content %}
 <div class="abs">
   <div class="rel">
-    <p>Ile Natka ma Kundery?</p>
+    <p>Co Natka myśli o Kunderach?</p>
+  </div>
+
+  <div class="rel search-carousel">
+    <form id="search" name="search" method="POST">
+      {{ search_form.csrf_token }}
+      {{ search_form.search_text(class_="form-search-text", placeholder_="Szukaj", value=request.args.get('search', ''))
+      }}
+      {{ search_form.search_submit(class_="btn btn-dark btn-search-submit") }}
+      {{ search_form.search_reset(class_="btn btn-dark btn-search-reset") }}
+    </form>
   </div>
   <div class="rel soft-page">
-    <div>
-          <!-- Carousel -->
-    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel -->
+    <div id="carousel" class="carousel slide" data-bs-ride="carousel">
 
       <!-- Indicators/dots -->
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="4"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="5"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="6"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="7"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="8"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="9"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="10"></button>
+        {% for book in books %}
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index-1 }}"
+          class="{% if loop.index == 1 %} active {% endif %}"></button>
+        {% endfor %}
       </div>
 
       <!-- The slideshow/carousel -->
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="in-carousel center flex">
-            <div class="cover"><p class="force-white">Cześć!</p></div>
-            <textarea disabled class="descr">Przewijaj by sprawdzić co Natka myśli o wybranych pozycjach</textarea>
-          </div>
-        </div>
-        {% for book in books %}
-        <div class="carousel-item">
-          <div class="in-carousel flex" >
-            <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
-            <textarea {% if session.get('logged') %} disabled {% endif %} class="descr">Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...</textarea>
-          </div>
-        </div>
-        {% endfor %}
+        <form method="POST" id="descriptions" name="descriptions">
+          {% for book in books %}
+          <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+            <div class="in-carousel flex">
+              <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
+              <div class="descr">
+                {{ ckeditor.create(name=book.id, value=book.descr) }}
+              </div>
+              {# <textarea id="{{ book.id }}" name="{{ book.id }}" {% if not session.get("logged", False) %} disabled {%
+                endif %} class="descr">{{ book.descr }}</textarea> #}
+            </div>
+          </div>  
+          {% endfor %} {{ ckeditor.load() }}
+          {% if not session.get("logged", False) %}
+            {% for book in books %}
+              {{ ckeditor.config(name=book.id, height=300, custom_config="uiColor: '#FFFFFF', readOnly: 1") }}
+            {% endfor %}
+          {% else %}
+            {% for book in books %}
+              {{ ckeditor.config(name=book.id, height=300, custom_config="uiColor: '#058F68', readOnly: 0") }}
+            {% endfor %}
+          {% endif %} 
+
+        </form>
       </div>
 
       <!-- Left and right controls/icons -->
-      <button class="carousel-control-button carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <button class="carousel-control-button carousel-control-prev" type="button" data-bs-target="#carousel"
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
       </button>
-      <button class="carousel-control-button carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <button class="carousel-control-button carousel-control-next" type="button" data-bs-target="#carousel"
+        data-bs-slide="next">
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>
 
-    </div>
-
   </div>
+
+</div>
 </div>
 
-  
-  
+
+
 {% endblock %}

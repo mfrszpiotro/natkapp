@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<form method="POST" class="form-inline ps-5">
-    {{ form.csrf_token }}
-    <div class="form-group pb-2">
-        <label class="" for="pass"><p class="small-text">Jesteś Natką? Wprowadź hasło:</p></label>
-        {{ form.password(class_="form-control") }}
-      </div>
-    {{ form.submit(class_="btn btn-dark submit") }}
-</form>
+    <form id="login" name="login" method="POST" class="form-inline ps-5">
+      {{ login_form.csrf_token }}
+        <div class="form-group pb-2">
+          <label class="" for="pass"><p class="small-text">Jesteś Natką? Wprowadź hasło:</p></label>
+          {{ login_form.password(class_="form-control") }}
+        </div>
+        {{ login_form.login(class_="btn btn-dark") }}
+    </form>
 
 {% endblock %}
