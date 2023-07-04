@@ -34,7 +34,7 @@ def index():
         return redirect(url_for("index", search=request.form.get("search_text")))
 
     elif request.form.get("search_reset"):
-        return redirect(url_for("index")) 
+        return redirect(url_for("index"))
 
     else:
         books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()

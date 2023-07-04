@@ -18,6 +18,7 @@
 }
 
 .cover {
+  background-image: url('/static/images/missing.jpg');
   height: 420px;
   width: 280px;
   margin-left: auto;

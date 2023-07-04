@@ -9,8 +9,7 @@
   <div class="rel search-carousel">
     <form id="search" name="search" method="POST">
       {{ search_form.csrf_token }}
-      {{ search_form.search_text(class_="form-search-text", placeholder_="Szukaj", value=request.args.get('search', ''))
-      }}
+      {{ search_form.search_text(class_="form-search-text", placeholder_="Szukaj", value=request.args.get('search', '')) }}
       {{ search_form.search_submit(class_="btn btn-dark btn-search-submit") }}
       {{ search_form.search_reset(class_="btn btn-dark btn-search-reset") }}
     </form>
@@ -33,7 +32,7 @@
           {% for book in books %}
           <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
             <div class="in-carousel flex">
-              <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="d-block cover">
+              <img src="{{ static_link(book.img) }}" alt="For title '{{book.name}}' cover was not found" class="d-block cover">
               <div class="descr">
                 {{ ckeditor.create(name=book.id, value=book.descr) }}
               </div>
