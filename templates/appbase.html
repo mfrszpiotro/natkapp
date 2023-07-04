@@ -4,6 +4,10 @@
 /static/images/{{ img }}
 {%- endmacro %}
 
+{% macro api_link(img) -%}
+https://image.tmdb.org/t/p/original/{{ img }}
+{%- endmacro %}
+
 {% block navbar %}
 
 <div id="slide">
