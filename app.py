@@ -41,9 +41,7 @@ def index():
         commit_diff_descr(db, books, request.form.items())
 
     # View:
-    search = correct_polish_letters(
-        str(request.args.get("search", "")).strip().casefold()
-    )
+    search = unidecode(request.args.get("search", "")).strip().casefold()
     if search != "":
         books = db.session.execute(
             db.select(Book)
@@ -64,10 +62,33 @@ def booklist():
     return render_template("booklist.html", books=list(books))
 
 
-@app.route("/movies")
+@app.route("/movies", methods=["GET", "POST"])
 def movies():
-    films = db.session.execute(db.select(Movie).order_by(Movie.search)).scalars()
-    return render_template("movies.html", films=list(films))
+    search_form = SearchForm()
+    films = []
+
+    # Form submitting logic:
+    if request.form.get("search_submit"):
+        return redirect(url_for("movies", search=request.form.get("search_text")))
+
+    elif request.form.get("search_reset"):
+        return redirect(url_for("movies"))
+
+    else:
+        films = db.session.execute(db.select(Movie).order_by(Movie.search)).scalars()
+        commit_diff_descr(db, films, request.form.items())
+
+    # View:
+    search = unidecode(request.args.get("search", "")).strip().casefold()
+    if search != "":
+        films = db.session.execute(
+            db.select(Movie)
+            .order_by(Movie.search)
+            .where(Movie.search.like("%" + search + "%"))
+        ).scalars()
+    else:
+        films = db.session.execute(db.select(Movie).order_by(Movie.search)).scalars()
+    return render_template("movies.html", films=list(films), search_form=search_form)
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -2,11 +2,22 @@
 
 }
 
-.btn-search-submit{
-
+.btn-search-submit:hover{
+  background-color: #383838 !important;
+  border-color: #292929 !important;
 }
 
-.btn-search-reset{
+.btn-search-reset:hover{
+  background-color: #383838 !important;
+  border-color: #292929 !important;
+}
+
+.btn-dark,
+.btn-dark:active,
+.btn-dark:visited,
+.btn-dark:focus {
+    background-color: #292929 !important;
+    border-color: #292929 !important;
 }
 
 .search-carousel {

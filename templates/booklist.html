@@ -19,15 +19,13 @@
         <tbody>
           {% for book in books %}
           <tr>
-            <td class="table-text">
+            <td class="">
               <div>
-                <select id="{{ book.id }}" name="{{ book.id }}" class="" {% if not session.get("logged", False) %}
-                  disabled {% endif %}>
+                <select id="{{ book.id }}" name="{{ book.id }}" class="table-select" {% if not session.get("logged", False) %} disabled {% endif %}>
                   <option selected value="{% if book.check == 'yes' %}yes{% else %}no{% endif %}">{% if book.check ==
                     "yes" %} Tak {% else %} Nie {% endif %}</option>
                   <option value="{% if book.check == 'yes' %}no{% else %}yes{% endif %}">{% if book.check == "yes" %}
                     Nie {% else %} Tak {% endif %}</option>
-                  <option value="loan">Wypożyczona</option>
                 </select>
               </div>
             </td>
