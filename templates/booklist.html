@@ -8,41 +8,46 @@
   </div>
   <div class="rel">
     <form method="POST" id="owned" name="owned">
-      <table class="table table-striped table-bordered table-hover">
-        <thead class="table-header">
-          <tr>
-            <th scope="col" class="table-header-text">Czy Natka ma?</th>
-            <th scope="col" class="table-header-title">Tytuł</th>
-            <th scope="col" class="table-img"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for book in books %}
-          <tr>
-            <td class="">
-              <div class="input-group">
-                <select id="{{ book.id }}" name="{{ book.id }}" class="table-select" {% if not session.get("logged", False) %} disabled {% endif %}>
-                  <option selected value="{% if book.check == 'yes' %}yes{% else %}no{% endif %}">
-                    {% if book.check =="yes" %} Tak {% else %} Nie {% endif %}</option>
-                  <option value="{% if book.check == 'yes' %}no{% else %}yes{% endif %}">
-                    {% if book.check == "yes" %} Nie {% else %} Tak {% endif %}</option>
-                </select>
-              </div>
-            </td>
-            <td class="table-text">
-              <a class="table-href" href="{{ url_for('index', search=book.name) }}">
-                {{ book.name }}
-              </a>
-            </td>
-            <td class="">
-              <a href="{{ url_for('index', search=book.name) }}">
-                <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="table-img">
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+          <thead class="table-header">
+            <tr>
+              <th scope="col" class="table-header-text">Czy Natka ma?</th>
+              <th scope="col" class="table-header-title">Tytuł</th>
+              <th scope="col" class="table-header-img">
+                <button type="submit" class="btn btn-dark btn-search-submit" name="search_submit" value="search_submit"><i class="fa fa-info fa-3x" aria-hidden="true"></i>                </button>
+                <button type="submit" class="btn btn-dark btn-search-reset" name="search_reset" value="search_reset"><i class="fa fa-refresh fa-3x" aria-hidden="true"></i></button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+            <tr>
+              <td class="">
+                <div class="input-group">
+                  <select id="{{ book.id }}" name="{{ book.id }}" class="table-select table-header" {% if not session.get("logged", False) %} disabled {% endif %}>
+                    <option selected value="{% if book.check == 'yes' %}yes{% else %}no{% endif %}">
+                      {% if book.check =="yes" %} &#10004 {% else %} &#10008 {% endif %}</option>
+                    <option value="{% if book.check == 'yes' %}no{% else %}yes{% endif %}">
+                      {% if book.check == "yes" %} &#10008 {% else %} &#10004 {% endif %}</option>
+                  </select>
+                </div>
+              </td>
+              <td class="table-text">
+                <a class="table-href" href="{{ url_for('index', search=book.name) }}">
+                  {{ book.name }}
+                </a>
+              </td>
+              <td class="">
+                <a href="{{ url_for('index', search=book.name) }}">
+                  <img src="{{ static_link(book.img) }}" alt="{{ book.name }}" class="table-img">
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </form>
   </div>
 </div>

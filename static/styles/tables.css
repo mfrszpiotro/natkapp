@@ -1,15 +1,26 @@
 .table-select {
-    width: 60px;
-    height: 30px; 
-    font-family: Cambria;
+    background-color: #292929;
+    color: white !important;
+    width: 50px !important;
+    height: 60px !important;
+    font-family: 'Cambria';
+    font-size: 35px;
 }
 
-.table-href{
+.table-select:disabled {
+    color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-overflow: '';
+    text-align: center;
+}
+
+.table-href {
     color: inherit;
     text-decoration: none;
 }
 
-.table-href:hover{
+.table-href:hover {
     color: inherit;
     text-decoration: none;
 }
@@ -23,21 +34,39 @@
     font-family: 'Cambria';
 }
 
-.table-header{
-    background-color: #292929;
+.table-header {
+    background-image: linear-gradient(0deg,
+            hwb(163 0% 65%) 0%,
+            hwb(163 2% 44%) 30%,
+            hwb(163 2% 40%) 60%,
+            hwb(163 2% 40%) 80%,
+            hwb(163 2% 40%) 100%);
+    border-top: hwb(163 2% 40%);
+    border-bottom: hwb(163 0% 65%);
+    border-left: hwb(163 2% 40%);
+    border-right: hwb(163 2% 40%);
+}
+
+.table-header-img {
+    width: 140px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .table-header-title {
     color: white !important;
-    font-size: 20px;
+    font-size: 6vh;
+    font-weight: lighter !important;
     font-family: 'Cambria';
-    width: 100vw;
+    min-width: 200px;
 }
 
 .table-header-text {
     color: white !important;
-    font-size: 20px;
+    font-size: 2vh;
+    font-weight: lighter !important;
     font-family: 'Cambria';
+    width: 50px !important;
 }
 
 .table-bordered {
@@ -58,7 +87,80 @@
     color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
     color: white !important;
     font-weight: bold;
+}
+
+@media only screen and (min-width: 768px) {
+    .table-select {
+        width: 60px;
+        height: 30px;
+        font-family: Cambria;
+    }
+
+    .table-href {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .table-href:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .table-img {
+        width: 140px;
+    }
+
+    .table-text {
+        color: rgba(255, 255, 255, 0.6);
+        font-family: 'Cambria';
+        font-size: 6vh;
+    }
+
+    .table-header {
+        background-color: #292929;
+    }
+
+    .table-header-title {
+        color: white !important;
+        font-size: 6vh;
+        font-weight: lighter !important;
+        font-family: 'Cambria';
+        min-width: 200px;
+    }
+
+    .table-header-text {
+        color: white !important;
+        font-size: 2vh;
+        font-weight: lighter !important;
+        font-family: 'Cambria';
+        width: 50px !important;
+    }
+
+    .table-bordered {
+        background: #292929 !important;
+        box-shadow: 2px 2px 4px #cccccc,
+            -2px -2px 4px #cccccc !important;
+    }
+
+    .table-large {
+        position: absolute;
+        width: 75%;
+        right: 11%;
+    }
+
+    .table-striped>tbody>tr:nth-child(odd)>td,
+    .table-striped>tbody>tr:nth-child(odd)>th {
+        background-color: #272727;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr:hover th {
+        color: white !important;
+        font-weight: bold;
+    }
 }

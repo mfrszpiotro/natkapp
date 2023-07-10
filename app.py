@@ -55,7 +55,21 @@ def index():
 
 @app.route("/booklist", methods=["GET", "POST"])
 def booklist():
-    if request.form.__len__() > 0:
+    # todo - not too elegant imo
+    if request.form.get("search_submit"):
+        books = db.session.execute(db.select(Book).order_by(Book.search).where(Book.check == "no")).scalars()
+        if len(list(books)) > 0:
+            flash("Natka nie ma jeszcze kilku książek...", "error")
+            books = db.session.execute(db.select(Book).order_by(Book.search).where(Book.check == "no")).scalars()
+            return render_template("booklist.html", books=list(books))
+        flash("Natka ma już wszystkie ksiązki!", "success")
+
+    # todo - not too elegant imo
+    elif request.form.get("search_reset"):
+        books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()
+        return render_template("booklist.html", books=list(books))
+    
+    elif request.form.__len__() > 0:
         books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()
         commit_diff_check(db, books, request.form.items())
     books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()

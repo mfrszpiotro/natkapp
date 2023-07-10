@@ -87,17 +87,18 @@ def init_movies(database):
         )
         db.session.add(movie)
     for appear in eliminate_duplicates(url_content.get("crew", []), "title"):
-        movie = Movie(
-            seen = "no",
-            orig_title = appear.get("original_title", ""),
-            name = appear.get("title", ""),
-            search = unidecode(appear.get("original_title", "")).strip().casefold(),
-            img = appear.get("poster_path", "missing.jpg"),
-            appear_type = "crew",
-            job = appear.get("job", ""),
-            descr = "Natka chyba jeszcze nie oglądała tego filmu!",
-        )
-        database.session.add(movie)
+        if not appear.get("original_title", "") == "Já truchlivý bůh":
+            movie = Movie(
+                seen = "no",
+                orig_title = appear.get("original_title", ""),
+                name = appear.get("title", ""),
+                search = unidecode(appear.get("original_title", "")).strip().casefold(),
+                img = appear.get("poster_path", "missing.jpg"),
+                appear_type = "crew",
+                job = appear.get("job", ""),
+                descr = "Natka chyba jeszcze nie oglądała tego filmu!",
+            )
+            database.session.add(movie)
     database.session.commit()
 
 def init_books(database):
