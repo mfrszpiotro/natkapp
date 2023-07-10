@@ -4,9 +4,22 @@
 <div class="abs">
   <div class="rel">
     <p>Filmy kunderskie</p>
-    {{ url_content }}
   </div>
-    <div class="rel soft-page">
+  <div class="search-carousel">
+    <form id="search" name="search" method="POST">
+      {{ search_form.csrf_token }}
+      <div class="input-group">
+        {{ search_form.search_text(class_="form-search-text form-control", placeholder_="Szukaj", value=request.args.get('search', '')) }}
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-dark btn-search-submit" name="search_submit" value="search_submit"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
+        </div>
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-dark btn-search-reset" name="search_reset" value="search_reset"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="rel soft-page">
     <!-- Carousel -->
     <div id="carousel" class="carousel slide" data-bs-ride="carousel">
 
@@ -24,12 +37,13 @@
           {% for film in films %}
           <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
             <div class="in-carousel flex">
-              <img src="{{ api_link(film.img) }}" alt="missing poster" class="d-block cover">
+              <img src="{{ api_link(film.img) }}" alt="For the title '{{film.orig_title}}' poster was not found"
+                class="d-block cover">
               <div class="descr">
-                {{ ckeditor.create(name=film.id, value=film.descr+"; "+film.name+"; "+film.orig_title+"; "+film.appear_type+"; "+film.job) }}
+                {{ ckeditor.create(name=film.id, value=film.descr) }}
               </div>
             </div>
-          </div>  
+          </div>
           {% endfor %} {{ ckeditor.load() }}
           {% if not session.get("logged", False) %}
             {% for film in films %}
@@ -39,7 +53,7 @@
             {% for film in films %}
               {{ ckeditor.config(name=film.id, height=300, custom_config="uiColor: '#058F68', readOnly: 0") }}
             {% endfor %}
-          {% endif %} 
+          {% endif %}
 
         </form>
       </div>

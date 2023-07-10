@@ -27,14 +27,14 @@
 
 .rel {
   position: relative;
-  margin-left: 25px;
-  margin-right: -25px;
 }
 
 .abs {
   position: absolute;
   top: 12%;
   margin-bottom: 20px;
+  margin-left: 25px;
+  margin-right: -25px;
   width: 80%;
 }
 

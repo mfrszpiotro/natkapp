@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
-import requests, urllib3
+from unidecode import unidecode
+import requests
 
 db = SQLAlchemy()
 
@@ -25,11 +26,6 @@ class Movie(db.Model):
     appear_type = db.Column(db.String, nullable=False)
     job = db.Column(db.String, nullable=False)
     descr = db.Column(db.String, nullable=True)
-
-
-def correct_polish_letters(st):
-    pol = {"ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n", "ó": "o", "ś": "s", "ź": "z", "ż": "z"}
-    return "".join([pol[c] if c in pol else c for c in st])
 
 
 def get_diff(tuple_list_db, tuple_list_form):
@@ -83,25 +79,26 @@ def init_movies(database):
             seen = "no",
             orig_title = appear.get("original_title", ""),
             name = appear.get("title", ""),
-            search = str(appear.get("title", "")).strip().casefold(),
-            img = appear.get("poster_path", "placeholder.png"),
+            search = unidecode(appear.get("original_title", "")).strip().casefold(),
+            img = appear.get("poster_path", "missing.jpg"),
             appear_type = "cast",
             job = appear.get("job", ""),
-            descr = "",
+            descr = "Natka chyba jeszcze nie oglądała tego filmu!",
         )
         db.session.add(movie)
     for appear in eliminate_duplicates(url_content.get("crew", []), "title"):
-        movie = Movie(
-            seen = "no",
-            orig_title = appear.get("original_title", ""),
-            name = appear.get("title", ""),
-            search = str(appear.get("title", "")).strip().casefold(),
-            img = appear.get("poster_path", "placeholder.png"),
-            appear_type = "crew",
-            job = appear.get("job", ""),
-            descr = "",
-        )
-        database.session.add(movie)
+        if not appear.get("original_title", "") == "Já truchlivý bůh":
+            movie = Movie(
+                seen = "no",
+                orig_title = appear.get("original_title", ""),
+                name = appear.get("title", ""),
+                search = unidecode(appear.get("original_title", "")).strip().casefold(),
+                img = appear.get("poster_path", "missing.jpg"),
+                appear_type = "crew",
+                job = appear.get("job", ""),
+                descr = "Natka chyba jeszcze nie oglądała tego filmu!",
+            )
+            database.session.add(movie)
     database.session.commit()
 
 def init_books(database):

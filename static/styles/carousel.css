@@ -1,16 +1,43 @@
-.form-search-text{
-
+.form-search-text {
+  height: 45px;
+  margin-top: 2.5px;
 }
 
-.btn-search-submit{
-
+.btn-search-submit {
+  width: 50px;
+  padding-left: 0 !important;
+  padding-right: 0 !important;;
 }
 
-.btn-search-reset{
+.btn-search-reset {
+  width: 50px;
+  padding-left: 0 !important;
+  padding-right: 0 !important;;
+}
+
+.btn-search-submit:hover {
+  background-color: #383838 !important;
+  border-color: #292929 !important;
+}
+
+.btn-search-reset:hover {
+  background-color: #383838 !important;
+  border-color: #292929 !important;
+}
+
+.btn-dark,
+.btn-dark:active,
+.btn-dark:visited,
+.btn-dark:focus {
+  background-color: #292929 !important;
+  border-color: #292929 !important;
 }
 
 .search-carousel {
+  max-width: 500px;
   margin-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .carousel-control-button {
@@ -18,6 +45,7 @@
 }
 
 .cover {
+  background-image: url('/static/images/missing.jpg');
   height: 420px;
   width: 280px;
   margin-left: auto;

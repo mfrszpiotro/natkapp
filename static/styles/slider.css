@@ -25,6 +25,8 @@
 .slider-abs {
   position: absolute;
   width: 90%;
+  margin-left: 25px;
+  margin-right: -25px;
 }
 
 #slide {
