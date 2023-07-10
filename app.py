@@ -18,10 +18,12 @@ ckeditor = CKEditor(app)
 
 
 with app.app_context():
-    db.drop_all()
-    db.create_all()
-    init_books(db)
-    init_movies(db)
+    pass
+    # NOTE: deploying correctly on free render.com requires turning off db drop/init with every initialization: 
+    # db.drop_all()
+    # db.create_all()
+    # init_books(db)
+    # init_movies(db)
 
 
 @app.route("/", methods=["GET", "POST"])
