@@ -4,7 +4,7 @@
 
 <div class="abs">
   <div class="rel">
-    <p>Pełna lista Kunderów:</p>
+    <p>Pełna lista Kunderów</p>
   </div>
   <div class="rel">
     <form method="POST" id="owned" name="owned">
@@ -20,12 +20,12 @@
           {% for book in books %}
           <tr>
             <td class="">
-              <div>
+              <div class="input-group">
                 <select id="{{ book.id }}" name="{{ book.id }}" class="table-select" {% if not session.get("logged", False) %} disabled {% endif %}>
-                  <option selected value="{% if book.check == 'yes' %}yes{% else %}no{% endif %}">{% if book.check ==
-                    "yes" %} Tak {% else %} Nie {% endif %}</option>
-                  <option value="{% if book.check == 'yes' %}no{% else %}yes{% endif %}">{% if book.check == "yes" %}
-                    Nie {% else %} Tak {% endif %}</option>
+                  <option selected value="{% if book.check == 'yes' %}yes{% else %}no{% endif %}">
+                    {% if book.check =="yes" %} Tak {% else %} Nie {% endif %}</option>
+                  <option value="{% if book.check == 'yes' %}no{% else %}yes{% endif %}">
+                    {% if book.check == "yes" %} Nie {% else %} Tak {% endif %}</option>
                 </select>
               </div>
             </td>
