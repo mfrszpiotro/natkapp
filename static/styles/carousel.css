@@ -6,13 +6,15 @@
 .btn-search-submit {
   width: 50px;
   padding-left: 0 !important;
-  padding-right: 0 !important;;
+  padding-right: 0 !important;
+  ;
 }
 
 .btn-search-reset {
   width: 50px;
   padding-left: 0 !important;
-  padding-right: 0 !important;;
+  padding-right: 0 !important;
+  ;
 }
 
 .btn-search-submit:hover {

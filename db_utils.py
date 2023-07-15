@@ -45,7 +45,9 @@ def extract_db_check(books):
 def commit_diff_descr(database, books, form_books):
     diffs = get_diff(extract_db_descr(books), list(form_books))
     for d in diffs:
-        db_book = database.session.execute(db.select(Book).where(Book.id == int(d[0]))).scalar_one()
+        db_book = database.session.execute(
+            db.select(Book).where(Book.id == int(d[0]))
+        ).scalar_one()
         db_book.descr = d[1]
         database.session.commit()
 
@@ -53,9 +55,12 @@ def commit_diff_descr(database, books, form_books):
 def commit_diff_check(database, books, form_books):
     diffs = get_diff(extract_db_check(books), list(form_books))
     for d in diffs:
-        db_book = database.session.execute(db.select(Book).where(Book.id == int(d[0]))).scalar_one()
+        db_book = database.session.execute(
+            db.select(Book).where(Book.id == int(d[0]))
+        ).scalar_one()
         db_book.check = d[1]
         database.session.commit()
+
 
 def eliminate_duplicates(list_of_dicts, key):
     unique_dicts = []
@@ -68,56 +73,59 @@ def eliminate_duplicates(list_of_dicts, key):
 
     return unique_dicts
 
+
 def get_movie_details(id):
     url = "https://api.themoviedb.org/3/movie/{}".format(id)
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E",
     }
     response = requests.get(url, headers=headers)
     content = response.json()
     return content["release_date"][0:4], content["runtime"]
 
+
 def init_movies(database):
     url = "https://api.themoviedb.org/3/person/40239/movie_credits?language=cz-CZ"
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E",
     }
     response = requests.get(url, headers=headers)
     url_content = response.json()
     for appear in eliminate_duplicates(url_content.get("cast", []), "title"):
         details = get_movie_details(appear.get("id"))
         movie = Movie(
-            seen = "no",
-            orig_title = appear.get("original_title", ""),
-            name = appear.get("title", ""),
-            search = unidecode(appear.get("original_title", "")).strip().casefold(),
-            img = appear.get("poster_path", "missing.jpg"),
-            appear_type = "cast",
-            job = appear.get("job", ""),
-            descr = "Natka chyba jeszcze nie oglądała tego filmu!",
-            year = details[0],
-            runtime = details[1]
+            seen="no",
+            orig_title=appear.get("original_title", ""),
+            name=appear.get("title", ""),
+            search=unidecode(appear.get("original_title", "")).strip().casefold(),
+            img=appear.get("poster_path", "missing.jpg"),
+            appear_type="cast",
+            job=appear.get("job", ""),
+            descr="Natka chyba jeszcze nie oglądała tego filmu!",
+            year=details[0],
+            runtime=details[1],
         )
         db.session.add(movie)
     for appear in eliminate_duplicates(url_content.get("crew", []), "title"):
         if not appear.get("original_title", "") == "Já truchlivý bůh":
             details = get_movie_details(appear.get("id"))
             movie = Movie(
-                seen = "no",
-                orig_title = appear.get("original_title", ""),
-                name = appear.get("title", ""),
-                search = unidecode(appear.get("original_title", "")).strip().casefold(),
-                img = appear.get("poster_path", "missing.jpg"),
-                appear_type = "crew",
-                job = appear.get("job", ""),
-                descr = "Natka chyba jeszcze nie oglądała tego filmu!",
-                year = details[0],
-                runtime = details[1]
+                seen="no",
+                orig_title=appear.get("original_title", ""),
+                name=appear.get("title", ""),
+                search=unidecode(appear.get("original_title", "")).strip().casefold(),
+                img=appear.get("poster_path", "missing.jpg"),
+                appear_type="crew",
+                job=appear.get("job", ""),
+                descr="Natka chyba jeszcze nie oglądała tego filmu!",
+                year=details[0],
+                runtime=details[1],
             )
             database.session.add(movie)
     database.session.commit()
+
 
 def init_books(database):
     book = Book(
