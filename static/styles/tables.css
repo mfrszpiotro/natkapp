@@ -91,6 +91,7 @@
 .table-hover tbody tr:hover th {
     color: white !important;
     font-weight: bold;
+    transition: 0.3s ease-in-out;
 }
 
 @media only screen and (min-width: 768px) {
@@ -161,6 +162,7 @@
     .table-hover tbody tr:hover td,
     .table-hover tbody tr:hover th {
         color: white !important;
-        font-weight: bold;
+        font-weight: bolder;
+        transition: 0.3s ease-in-out;
     }
 }

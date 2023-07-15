@@ -37,8 +37,11 @@
           {% for film in films %}
           <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
             <div class="in-carousel flex">
-              <img src="{{ api_link(film.img) }}" alt="For the title '{{film.orig_title}}' poster was not found"
-                class="d-block cover">
+              <div class="image-container cover">
+                <img class="poster d-block cover" src="{{ api_link(film.img) }}">
+                <div class="gradient-layer"></div>
+                <div class="description">{{film.orig_title}}, {{film.year}}, {{film.runtime}}'</div>
+              </div>
               <div class="descr">
                 {{ ckeditor.create(name=film.id, value=film.descr) }}
               </div>
@@ -54,7 +57,6 @@
               {{ ckeditor.config(name=film.id, height=300, custom_config="uiColor: '#058F68', readOnly: 0") }}
             {% endfor %}
           {% endif %}
-
         </form>
       </div>
 

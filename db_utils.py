@@ -26,6 +26,8 @@ class Movie(db.Model):
     appear_type = db.Column(db.String, nullable=False)
     job = db.Column(db.String, nullable=False)
     descr = db.Column(db.String, nullable=True)
+    year = db.Column(db.Integer, nullable=True)
+    runtime = db.Column(db.String, nullable=True)
 
 
 def get_diff(tuple_list_db, tuple_list_form):
@@ -66,6 +68,16 @@ def eliminate_duplicates(list_of_dicts, key):
 
     return unique_dicts
 
+def get_movie_details(id):
+    url = "https://api.themoviedb.org/3/movie/{}".format(id)
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E"
+    }
+    response = requests.get(url, headers=headers)
+    content = response.json()
+    return content["release_date"][0:4], content["runtime"]
+
 def init_movies(database):
     url = "https://api.themoviedb.org/3/person/40239/movie_credits?language=cz-CZ"
     headers = {
@@ -75,6 +87,7 @@ def init_movies(database):
     response = requests.get(url, headers=headers)
     url_content = response.json()
     for appear in eliminate_duplicates(url_content.get("cast", []), "title"):
+        details = get_movie_details(appear.get("id"))
         movie = Movie(
             seen = "no",
             orig_title = appear.get("original_title", ""),
@@ -84,10 +97,13 @@ def init_movies(database):
             appear_type = "cast",
             job = appear.get("job", ""),
             descr = "Natka chyba jeszcze nie oglądała tego filmu!",
+            year = details[0],
+            runtime = details[1]
         )
         db.session.add(movie)
     for appear in eliminate_duplicates(url_content.get("crew", []), "title"):
         if not appear.get("original_title", "") == "Já truchlivý bůh":
+            details = get_movie_details(appear.get("id"))
             movie = Movie(
                 seen = "no",
                 orig_title = appear.get("original_title", ""),
@@ -97,6 +113,8 @@ def init_movies(database):
                 appear_type = "crew",
                 job = appear.get("job", ""),
                 descr = "Natka chyba jeszcze nie oglądała tego filmu!",
+                year = details[0],
+                runtime = details[1]
             )
             database.session.add(movie)
     database.session.commit()
@@ -104,23 +122,23 @@ def init_movies(database):
 def init_books(database):
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Życie jest gdzie indziej",
         search="zycie jest gdzie indziej",
-        img="indziej.jfif",
+        img="indziej.jpg",
     )
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Księga śmiechu i zapomnienia",
         search="ksiega smiechu i zapomnienia",
-        img="ksiega.jpeg",
+        img="ksiega.jpg",
     )
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Śmieszne miłości",
         search="smieszne milosci",
         img="milosci.jpg",
@@ -128,7 +146,7 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Nieśmiertelność",
         search="niesmiertelnosc",
         img="niesmiertelnosc.jpg",
@@ -136,7 +154,7 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Powoloność",
         search="powolnosc",
         img="powolnosc.jpg",
@@ -144,7 +162,7 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Święto nieistotności",
         search="swieto nieistotnosci",
         img="swieto.jpg",
@@ -152,15 +170,15 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Zdradzone testamenty",
         search="zdradzone testamenty",
-        img="testamenty.jfif",
+        img="testamenty.jpg",
     )
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Walc pożegnalny",
         search="walc pozegnalny",
         img="walc.jpg",
@@ -168,7 +186,7 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Żart",
         search="zart",
         img="zart.jpg",
@@ -176,10 +194,58 @@ def init_books(database):
     database.session.add(book)
     book = Book(
         descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
-        check="yes",
+        check="no",
         name="Zasłona",
         search="zaslona",
         img="zaslona.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Sztuka powieści",
+        search="sztuka",
+        img="sztuka.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Tożsamość",
+        search="tozsamosc",
+        img="tozsamosc.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Kubuś i jego pan",
+        search="kubus i jego pan",
+        img="kubus.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Nieznośna lekkość bytu",
+        search="nieznosna lekkosc bytu",
+        img="nieznosna.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Spotkanie",
+        search="spotkanie",
+        img="spotkanie.jpg",
+    )
+    database.session.add(book)
+    book = Book(
+        descr="Jak poprosisz ładnie Natkę, to ci tu napisze opinię o tym Kunderze...",
+        check="no",
+        name="Niewiedza",
+        search="niewiedza",
+        img="niewiedza.jpg",
     )
     database.session.add(book)
     database.session.commit()
