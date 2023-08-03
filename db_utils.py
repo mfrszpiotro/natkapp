@@ -5,6 +5,11 @@ import requests
 db = SQLAlchemy()
 
 
+class Pass(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    password = db.Column(db.String)
+
+
 # api google books
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
