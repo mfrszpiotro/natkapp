@@ -11,20 +11,16 @@ from flask import (
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from forms import LoginForm, SearchForm
-from db_utils import *
+from db_utils import commit_diff_check, commit_diff_descr
+from models import Book, Movie, Pass, db
+from config import Config
+from unidecode import unidecode
 
-# create the app
 app = Flask(__name__)
-# configure the SQLite database, relative to the app instance folder
-app.config[
-    "SECRET_KEY"
-] = 'h+u5-sNA2%Fr&3"y"9nQEn==rfLjfKB{$RGShJ"$2I`d&j[5-J79:RJZoQJ('
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///natkapp.db"
-app.config["BOOTSTRAP_BOOTSWATCH_THEME"] = "lux"
+app.config.from_object(Config)
 db.init_app(app)
 bootstrap = Bootstrap5(app)
 ckeditor = CKEditor(app)
-
 
 with app.app_context():
     pass
@@ -129,7 +125,10 @@ def login():
         login_form = LoginForm()
         if login_form.validate_on_submit():
             pass_check = db.session.execute(db.select(Pass)).scalar_one_or_none()
-            if login_form.password.data == pass_check.password and login_form.login.data == True:
+            if (
+                login_form.password.data == pass_check.password
+                and login_form.login.data == True
+            ):
                 session["logged"] = True
                 return redirect(url_for("index"))
 
@@ -144,6 +143,7 @@ def logout():
         session.pop("logged")
         return redirect(url_for("index"))
     return redirect(url_for("index"))
+
 
 @app.route("/secret")
 def secret():
