@@ -25,11 +25,11 @@ ckeditor = CKEditor(app)
 with app.app_context():
     pass
     # NOTE: deploying correctly on free render.com requires turning off db drop/init with every initialization:
-    db.drop_all()
-    db.create_all()
-    init_books(db)
-    init_movies(db)
-    init_czech(db)
+    # db.drop_all()
+    # db.create_all()
+    # init_books(db)
+    # init_movies(db)
+    # init_czech(db)
 
 
 
