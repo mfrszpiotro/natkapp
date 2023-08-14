@@ -1,9 +1,5 @@
-import requests, urllib3
-from datetime import datetime
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-timestamp_format = "%Y-%m-%dT%H:%M:%S"
+import requests
+from config import Config
 
 
 class UnauthorizedApiCall(Exception):
@@ -11,15 +7,11 @@ class UnauthorizedApiCall(Exception):
 
 
 class ClientTmdbApi:
-    credentials = (
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmYxODNiNTU4NTk1NTAxMDU3YzRmZGNiMjdkZjM5YiIsInN1YiI6IjY0YTAyYTI0ZDUxOTFmMDBlMjYzOTRjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.auBno1g8lHhknr7TwBMTGMNvsYBqViqJ3nJNK05HN0E",
-    )
     url = "https://api.themoviedb.org/3/"
-    content = "application/json"
     cookie_tag = "Set-Cookie"
     session = requests.Session()
-    session.headers["Accept"] = content
-    session.headers["Authorization"] = credentials
+    session.headers["Accept"] = "application/json"
+    session.headers["Authorization"] = Config.TMDB_API_CREDENTIALS
 
     def _request(self, api_method, json=None):
         if json is None:
@@ -43,7 +35,6 @@ class ClientTmdbApi:
                 "person", str(id_person), object_name, language
             )
         )
-    
+
     def get_object_details(self, id_movie, object_name="movie"):
         return self._request("{}/{}".format(object_name, str(id_movie)))
-
