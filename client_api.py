@@ -1,6 +1,7 @@
-import requests
+import requests, urllib3
 from config import Config
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class UnauthorizedApiCall(Exception):
     pass

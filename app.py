@@ -11,8 +11,8 @@ from flask import (
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from forms import LoginForm, SearchForm
-from db_utils import commit_diff_check, commit_diff_descr
-from models import Book, Movie, Pass, db
+from db_utils import commit_diff_check, commit_diff_descr, init_czech, init_books, init_movies
+from models import Book, Kniha, Movie, Pass, db
 from config import Config
 from unidecode import unidecode
 
@@ -25,10 +25,12 @@ ckeditor = CKEditor(app)
 with app.app_context():
     pass
     # NOTE: deploying correctly on free render.com requires turning off db drop/init with every initialization:
-    # db.drop_all()
-    # db.create_all()
-    # init_books(db)
-    # init_movies(db)
+    db.drop_all()
+    db.create_all()
+    init_books(db)
+    init_movies(db)
+    init_czech(db)
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -85,6 +87,62 @@ def booklist():
         commit_diff_check(db, books, request.form.items())
     books = db.session.execute(db.select(Book).order_by(Book.search)).scalars()
     return render_template("booklist.html", books=list(books))
+
+
+@app.route("/czech", methods=["GET", "POST"])
+def czech():
+    search_form = SearchForm()
+    books = []
+
+    # Form submitting logic:
+    if request.form.get("search_submit"):
+        return redirect(url_for("czech", search=request.form.get("search_text")))
+
+    elif request.form.get("search_reset"):
+        return redirect(url_for("czech"))
+
+    else:
+        books = db.session.execute(db.select(Kniha).order_by(Kniha.search)).scalars()
+        commit_diff_descr(db, books, request.form.items(), True)
+
+    # View:
+    search = unidecode(request.args.get("search", "")).strip().casefold()
+    if search != "":
+        books = db.session.execute(
+            db.select(Kniha)
+            .order_by(Kniha.search)
+            .where(Kniha.search.like("%" + search + "%"))
+        ).scalars()
+    else:
+        books = db.session.execute(db.select(Kniha).order_by(Kniha.search)).scalars()
+    return render_template("czech.html", books=list(books), search_form=search_form)
+
+
+@app.route("/czechlist", methods=["GET", "POST"])
+def czechlist():
+    # todo - not too elegant imo
+    if request.form.get("search_submit"):
+        books = db.session.execute(
+            db.select(Kniha).order_by(Kniha.search).where(Kniha.check == "no")
+        ).scalars()
+        if len(list(books)) > 0:
+            flash("Natka nie ma jeszcze kilku książek...", "error")
+            books = db.session.execute(
+                db.select(Kniha).order_by(Kniha.search).where(Kniha.check == "no")
+            ).scalars()
+            return render_template("czechlist.html", books=list(books))
+        flash("Natka ma już wszystkie ksiązki!", "success")
+
+    # todo - not too elegant imo
+    elif request.form.get("search_reset"):
+        books = db.session.execute(db.select(Kniha).order_by(Kniha.search)).scalars()
+        return render_template("czechlist.html", books=list(books))
+
+    elif request.form.__len__() > 0:
+        books = db.session.execute(db.select(Kniha).order_by(Kniha.search)).scalars()
+        commit_diff_check(db, books, request.form.items(), True)
+    books = db.session.execute(db.select(Kniha).order_by(Kniha.search)).scalars()
+    return render_template("czechlist.html", books=list(books))
 
 
 @app.route("/movies", methods=["GET", "POST"])
@@ -148,7 +206,7 @@ def logout():
 @app.route("/secret")
 def secret():
     # PASSWORD SETUP/RESET
-    # db.session.add(Pass(password="***"))
+    # db.session.add(Pass(password="wdupietrzaslo"))
     # db.session.commit()
     return send_file(
         "instance/natkapp.db", download_name="natkapp.db", as_attachment=True

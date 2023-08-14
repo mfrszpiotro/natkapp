@@ -8,8 +8,16 @@ class Pass(db.Model):
     password = db.Column(db.String)
 
 
-# api google books
 class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    check = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
+    search = db.Column(db.String, unique=True, nullable=False)
+    img = db.Column(db.String, unique=True, nullable=False)
+    descr = db.Column(db.String, nullable=True)
+
+
+class Kniha(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     check = db.Column(db.String, nullable=False)
     name = db.Column(db.String, unique=True, nullable=False)

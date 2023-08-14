@@ -43,6 +43,18 @@ https://image.tmdb.org/t/p/original/{{ img }}
                 <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">🎬</h4></button>
             </a>
         </div>
+        <div class="rel pt-1">
+            <a href="{{ url_for('czech') }}">
+                <button type="button" class="btn btn-dark slider-btn">České knihy</button>
+                <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">🍻</h4></button>
+            </a>
+        </div>    
+        <div class="rel pt-1">
+            <a href="{{ url_for('czechlist') }}">
+                <button type="button" class="btn btn-dark slider-btn">Seznam českých knih</button>
+                <button type="button" class="btn btn-dark slider-icon"><h4 class="slider-icon-txt">📜</h4></button>
+            </a>
+        </div>
         {% if not session.get("logged", False) %}
             <div class="rel pt-1">
                 <a href="{{ url_for('login') }}">
