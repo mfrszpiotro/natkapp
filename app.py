@@ -126,12 +126,12 @@ def czechlist():
             db.select(Kniha).order_by(Kniha.search).where(Kniha.check == "no")
         ).scalars()
         if len(list(books)) > 0:
-            flash("Natka nie ma jeszcze kilku książek...", "error")
+            flash("Natce stále chybí několik knih...", "error")
             books = db.session.execute(
                 db.select(Kniha).order_by(Kniha.search).where(Kniha.check == "no")
             ).scalars()
             return render_template("czechlist.html", books=list(books))
-        flash("Natka ma już wszystkie ksiązki!", "success")
+        flash("Natka už má všechny knihy!", "success")
 
     # todo - not too elegant imo
     elif request.form.get("search_reset"):
